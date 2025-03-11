@@ -12,7 +12,7 @@ model Telefone {
   n_numero      Int?
   t_descricao   String? @db.VarChar
   n_Idcliente   Int
-  cliente       cliente @relation(fields: [n_Idcliente], references: [n_Idcliente], onDelete: NoAction, onUpdate: NoAction)
+  cliente       cliente @relation(fields: [n_Idcliente], references: [n_Idcliente], onDelete: Cascade, onUpdate: NoAction)
 }
 
 model cartao {
@@ -45,7 +45,7 @@ model usuario{
   t_password   String?
   t_codigo2fa String?
   n_Idconta Int
-  conta conta  @relation(fields: [n_Idconta], references: [n_Idconta], onDelete: NoAction, onUpdate: NoAction)
+  conta conta  @relation(fields: [n_Idconta], references: [n_Idconta], onDelete: Cascade, onUpdate: NoAction)
   dispositivo    dispositivo[]
 }
 model client_email {
@@ -69,7 +69,7 @@ model conta {
   t_local        String?
   t_area         String?
   cartao         cartao[]
-  cliente        cliente    @relation(fields: [n_Idcliente], references: [n_Idcliente], onDelete: NoAction, onUpdate: NoAction)
+  cliente        cliente    @relation(fields: [n_Idcliente], references: [n_Idcliente], onDelete: Cascade, onUpdate: NoAction)
   tipo_cota      tipo_cota  @relation(fields: [n_Idtipoconta], references: [n_Idtipoconta], onDelete: NoAction, onUpdate: NoAction)
   trasacao       trasacao[]
   LevantamentoSemCartao LevantamentoSemCartao[]
@@ -82,7 +82,7 @@ model dispositivo {
   n_id_usuario       Int
   t_sistemaoperativo String? @db.VarChar
   t_navegador        String? @db.VarChar
-  usuario          usuario @relation(fields: [n_id_usuario], references: [n_id_usuario], onDelete: NoAction, onUpdate: NoAction)
+  usuario          usuario @relation(fields: [n_id_usuario], references: [n_id_usuario], onDelete: Cascade, onUpdate: NoAction)
 @@index([n_id_usuario, t_Iddispositivo])
 }
 
@@ -117,7 +117,7 @@ model trasacao {
   t_descricao    String?
   t_datatrasacao String? @db.VarChar
   n_saldoactual  Int?
-  conta          conta   @relation(fields: [n_contaorigem], references: [n_Idconta], onDelete: NoAction, onUpdate: NoAction)
+  conta          conta   @relation(fields: [n_contaorigem], references: [n_Idconta], onDelete: Cascade, onUpdate: NoAction)
 }
 model LevantamentoSemCartao {
   n_Idlevantamento   Int      @id @default(autoincrement())

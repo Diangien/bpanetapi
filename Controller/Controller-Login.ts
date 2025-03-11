@@ -29,11 +29,13 @@ export default class CredenciaisController {
     public  generate2fa= async(req: Request, res: Response): Promise<void> => {
         try {
 
-            const numeroadessao: number = parseInt(req.body.numeroadessao);
-            const accessCode: string = req.body.accesscode;
+            const numeroAdesao: number = parseInt(req.body.numeroAdesao);
+            console.log(numeroAdesao);
+            
+            const codigoAcesso: string = req.body.codigoAcesso;
             const usuario = await prisma.usuario.findFirst({
                 where: {
-                    n_adesao: numeroadessao
+                    n_adesao: numeroAdesao
                 },
                 select: {
                     t_password: true,
@@ -51,7 +53,7 @@ export default class CredenciaisController {
                 res.status(400).json({ message: "Número de adesão inválido " })
                 return;
             }
-            if (await this.compareHas(accessCode.toString(), usuario.t_password)) {
+            if (await this.compareHas(codigoAcesso.toString(), usuario.t_password)) {
                 const codigo2fa = this.generatecodigo2fa().toString();
                 await prisma.usuario.update({
                     where: { n_id_usuario: usuario?.n_id_usuario },
@@ -72,6 +74,7 @@ export default class CredenciaisController {
                     sendcodigo2fa(client_email.t_email_address, codigo2fa)
                      .catch(err => console.error("Erro ao enviar código 2FA:", err));
                     res.status(200).json({ message: "Email enviado para a sua caixa de entrada. Por favor verifique" }) ;
+                    res.status(200).json()
                 }
 
             } else {
